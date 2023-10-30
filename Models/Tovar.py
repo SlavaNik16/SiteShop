@@ -1,3 +1,5 @@
+from Models.Settings import *
+
 class Tovar:
     __tovars = {
         "Видеокарта": 23432,
@@ -28,6 +30,17 @@ class Tovar:
             i+=1
         if i == 0:
             print("Товаров нет в наличие!")
+
+    def AddTovars(self, isAdmin, key, value):
+        if (isAdmin == STATUS_ADMIN):
+            self.GetTovars()[key] = value
+            return True
+        return False
+    def DeleteTovars(self, isAdmin, key):
+        if (isAdmin == STATUS_ADMIN):
+            self.GetTovars().pop(key)
+            return True
+        return False
 
     def __str__(self):
         print("Список товаров и их цен: ")

@@ -4,7 +4,7 @@ class Person:
     surname = ""
     __basket = dict()
     __count = 0
-    def __init__(self, isAdmin, name="", surname=""):
+    def __init__(self, isAdmin, name="Неизвестно", surname="Неизвестно"):
         self.__status = STATUS_ADMIN if isAdmin else STATUS_USER
         self.name = name
         self.surname = surname
