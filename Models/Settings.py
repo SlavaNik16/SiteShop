@@ -1,0 +1,2 @@
+STATUS_USER = "User"
+STATUS_ADMIN = "Admin"
