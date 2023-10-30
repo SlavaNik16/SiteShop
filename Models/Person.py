@@ -1,9 +1,11 @@
 from Models.Settings import *
 class Person:
+
     name = ""
     surname = ""
     __basket = dict()
     __count = 0
+
     def __init__(self, isAdmin, name="Неизвестно", surname="Неизвестно"):
         self.__status = STATUS_ADMIN if isAdmin else STATUS_USER
         self.name = name
@@ -42,8 +44,6 @@ class Person:
         for key, value in self.GetBasket().items():
             print(f"{i + 1}) {key} - {value}")
             i += 1
-
-
 
     def __str__(self):
         return f"Status - {self.__status}: Name: {self.name}  Surname: {self.surname}"

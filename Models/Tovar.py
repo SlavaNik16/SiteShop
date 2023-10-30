@@ -1,6 +1,7 @@
 from Models.Settings import *
 
 class Tovar:
+
     __tovars = {
         "Видеокарта": 23432,
         "Материнская плата": 7423,
@@ -9,6 +10,7 @@ class Tovar:
         "Клавиатура": 6812,
         "Мышь": 2250
     }
+
     def GetTovars(self):
         return self.__tovars
 
@@ -36,6 +38,7 @@ class Tovar:
             self.GetTovars()[key] = value
             return True
         return False
+
     def DeleteTovars(self, isAdmin, key):
         if (isAdmin == STATUS_ADMIN):
             self.GetTovars().pop(key)
