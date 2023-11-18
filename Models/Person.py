@@ -22,7 +22,7 @@ class Person:
 
     def DeleteBasket(self, keys: list):
         for key in keys:
-            if (key not in self.__basket.keys()):
+            if key not in self.__basket.keys():
                 return False
             self.__basket.pop(key)
             self.__count = len(self.__basket)
@@ -35,7 +35,7 @@ class Person:
         return self.__count
 
     def GetCountValidate(self):
-        if (self.__count >= 5):
+        if self.__count >= 5:
             return False
         return True
 

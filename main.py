@@ -20,21 +20,21 @@ def Site(user):
         SiteAdmin(tovars, user)
 
 
-def SiteUserViewTovars(tovars, user):
+def SiteUserViewTovars(tovars:Tovar, user:Person):
     tovars.PrintTovars()
-    if (user.GetCountValidate()):
+    if user.GetCountValidate():
         print(f"\nХотите что-нибудь купить? Выберите до 5 индивидуальных товаров включительно"
               f"(Кол-во : {user.GetCount()}) или пропишите n - Для выхода: ")
     else:
         print("\nВы уже выбрали максимальное число покупок! Зайдите в корзину и удалите некоторые покупки!")
-    while (user.GetCountValidate()):
+    while user.GetCountValidate():
         try:
             answer = input("Ваш номер: ")
             if answer == "n":
                 break
             num = int(answer)
             tovarName = tovars.GetTovarNameById(num - 1)
-            if (tovarName):
+            if tovarName:
                 user.SetBasket(tovars.GetTovarByKey(tovarName))
                 print(f"\nВаш товар занесен в корзину! Кол-во {user.GetCount()}\n")
             else:
@@ -44,8 +44,8 @@ def SiteUserViewTovars(tovars, user):
             tovars.PrintTovars()
 
 
-def SiteUserViewBaskets(tovars, user):
-    while (user.GetCount() != 0):
+def SiteUserViewBaskets(tovars:Tovar, user:Person):
+    while user.GetCount() != 0:
         print(f"Кол-во покупок: {user.GetCount()}/5")
         print(f"Полная цена: {sum(user.GetBasket().values())}")
         user.PrintBaskets()
@@ -55,8 +55,8 @@ def SiteUserViewBaskets(tovars, user):
                 break
             num = int(answer)
             tovarName = tovars.GetTovarNameById(num - 1)
-            if (tovarName):
-                if (user.DeleteBasket(tovars.GetTovarByKey(tovarName).keys())):
+            if tovarName:
+                if user.DeleteBasket(tovars.GetTovarByKey(tovarName).keys()):
                     print(f"\nВаш товар удален из корзины!\n")
                 else:
                     print("Произошла непредвиденная ошибка: Вашего товара нет в корзине!")
@@ -68,10 +68,19 @@ def SiteUserViewBaskets(tovars, user):
         print("Корзина пуста!")
 
 
-def SiteUser(tovars, user):
+def SiteUserViewBasketsDiscounts(tovars:Tovar, user:Person):
+    discounts = dict()
+    for i in range(0, 2):
+        rnd = random.randint(0, len(tovars) - 1)
+
+
+def SiteUser(tovars:Tovar, user:Person):
     while True:
-        print(
-            "\nВам доступны такие действия:\n\t1) Просмотреть товары\n\t2) Просмотреть корзину\n\tВыйти из аккаунта - нажать любую кнопку")
+        print("\nВам доступны такие действия:\n\t"
+              "1) Просмотреть товары\n\t"
+              "2) Просмотреть корзину\n\t"
+              "3)Выбрать лучшие предложения(надо ввести штрихкод)\n\t"
+              "Выйти из аккаунта - нажать любую кнопку")
         answer = input("Ваш выбор:")
         print()
         match answer:
@@ -79,6 +88,8 @@ def SiteUser(tovars, user):
                 SiteUserViewTovars(tovars, user)
             case "2":
                 SiteUserViewBaskets(tovars, user)
+            case "2":
+                SiteUserViewBasketsDiscounts(tovars, user)
             case _:
                 break
 
@@ -88,7 +99,7 @@ def SiteAdminViewUsers():
     i = 0
     listUser = list()
     for key, value in users.items():
-        if (value.GetStatus() == STATUS_USER):
+        if value.GetStatus() == STATUS_USER:
             listUser.append(key)
             print(f"\t{i + 1})Пользователь: {value.name} {value.surname}")
             i += 1
@@ -103,7 +114,7 @@ def SiteAdminRemoveUsers():
             break
         try:
             num = int(answer)
-            if ((num - 1) > -1 and (num - 1) < len(usersListKey)):
+            if -1 < (num - 1) < len(usersListKey):
                 userKey = usersListKey[num - 1]
                 print(f"\nПользователь: {users.pop(userKey)} - удален!\n")
             else:
@@ -112,13 +123,13 @@ def SiteAdminRemoveUsers():
             print("Неверный формат!")
 
 
-def SiteAdminAddTovars(tovars, user):
+def SiteAdminAddTovars(tovars:Tovar, user:Person):
     tovars.PrintTovars()
     print()
     nameTovars = input("Введите название товара: ")
     try:
         price = float(input("Введите цену товара: "))
-        if (tovars.AddTovars(user.GetStatus(), nameTovars, price)):
+        if tovars.AddTovars(user.GetStatus(), nameTovars, price):
             print("Товар успешно добавлен")
         else:
             print("Товар не добавлен!!! Недостаточно прав!")
@@ -126,7 +137,7 @@ def SiteAdminAddTovars(tovars, user):
         print("Данные введены неверно!")
 
 
-def SiteAdminDeleteTovars(tovars, user):
+def SiteAdminDeleteTovars(tovars:Tovar, user:Person):
     tovars.PrintTovars()
     print()
     while True:
@@ -136,7 +147,7 @@ def SiteAdminDeleteTovars(tovars, user):
         try:
             num = int(answer)
             nameTovar = tovars.GetTovarNameById(num - 1)
-            if (tovars.DeleteTovars(user.GetStatus(), nameTovar)):
+            if tovars.DeleteTovars(user.GetStatus(), nameTovar):
                 print("Товар успешно удален")
             else:
                 print("Товар не удален!!! Недостаточно прав!")
@@ -144,10 +155,16 @@ def SiteAdminDeleteTovars(tovars, user):
             print("Данные введены неверно!")
 
 
-def SiteAdmin(tovars, user):
+def SiteAdmin(tovars:Tovar, user:Person):
     while True:
         print(
-            "Вам доступны такие действия:\n\t1) Просмотреть всех пользователей \n\t2) Удалить пользователя \n\t3) Просмотреть товары \n\t4) Добавить товары \n\t5) Удалить товары\n\tВыйти из аккаунта - нажать любую кнопку");
+            "Вам доступны такие действия:\n\t"
+            "1) Просмотреть всех пользователей \n\t"
+            "2) Удалить пользователя \n\t"
+            "3) Просмотреть товары \n\t"
+            "4) Добавить товары \n\t"
+            "5) Удалить товары\n\t"
+            "Выйти из аккаунта - нажать любую кнопку")
         answer = input("Ваш выбор:")
         match answer:
             case "1":
@@ -172,7 +189,10 @@ def EnterSite(users):
     str = f"{login}_{password}"
     if str in users:
         user = users[str]
-        print(f"\nПользователь найден!\n\tИмя: {user.name}\n\tФамилия: {user.surname}\n\tСтатус: {user.GetStatus()}")
+        print(f"\nПользователь найден!\n\t"
+              f"Имя: {user.name}\n\t"
+              f"Фамилия: {user.surname}\n\t"
+              f"Статус: {user.GetStatus()}")
         Site(user)
     else:
         print("\nПользователь не найден! Повторите попытку снова или зарегистрируйтесь!\n")
@@ -184,11 +204,11 @@ def RegisterSite():
     surname = input("Введите вашу Фамилию: ")
     login = input("Введите ваш *Логин: ")
     password = input("Введите ваш *Пароль: ")
-    if (login == "" or password == ""):
+    if login == "" or password == "":
         print("Неверно введены данные!")
         return
     str = f"{login}_{password}"
-    if (str in users.keys()):
+    if str in users.keys():
         print("Пользователь уже создан!")
         return
     users[str] = Person(False, name, surname)
@@ -198,7 +218,10 @@ def RegisterSite():
 def main():
     while True:
         print(
-            "Добро пожаловать на сайт Собери ПК. Выберите одно из двух действий:\n\t1) Войти \n\t2) Зарегистрироватся\n\tВыйти - введите любую букву\n")
+            "Добро пожаловать на сайт Собери ПК. Выберите одно из двух действий:\n\t"
+            "1) Войти \n\t"
+            "2) Зарегистрироваться\n\t"
+            "Выйти - введите любую букву\n")
         answer = input("Ваш выбор: ")
         print()
         match answer:

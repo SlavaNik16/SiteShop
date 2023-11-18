@@ -15,12 +15,12 @@ class Tovar:
         return self.__tovars
 
     def GetTovarNameById(self, index: int):
-        if (index >= 0 and index < len(self.__tovars)):
+        if 0 <= index < len(self.__tovars):
             return list(self.__tovars.keys())[index]
         return False  # "Нет такого продукта"
 
     def GetTovarByKey(self, key):
-        if (key in self.__tovars.keys()):
+        if key in self.__tovars.keys():
             return dict({(key, self.__tovars[key])})
         return False  # "Неправильный ключ"
 
@@ -34,13 +34,13 @@ class Tovar:
             print("Товаров нет в наличие!")
 
     def AddTovars(self, isAdmin: bool, key, value):
-        if (isAdmin == STATUS_ADMIN):
+        if isAdmin == STATUS_ADMIN:
             self.GetTovars()[key] = value
             return True
         return False
 
     def DeleteTovars(self, isAdmin: bool, key):
-        if (isAdmin == STATUS_ADMIN):
+        if isAdmin == STATUS_ADMIN:
             self.GetTovars().pop(key)
             return True
         return False
