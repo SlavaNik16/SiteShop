@@ -11,6 +11,7 @@ users = {
     "a_pas": Person(True, surname="Иванов")
 }
 
+
 def Site(user):
     tovars = Tovar()
     if user.GetStatus() == STATUS_USER:
@@ -18,11 +19,12 @@ def Site(user):
     else:
         SiteAdmin(tovars, user)
 
+
 def SiteUserViewTovars(tovars, user):
     tovars.PrintTovars()
     if (user.GetCountValidate()):
         print(f"\nХотите что-нибудь купить? Выберите до 5 индивидуальных товаров включительно"
-          f"(Кол-во : {user.GetCount()}) или пропишите n - Для выхода: ")
+              f"(Кол-во : {user.GetCount()}) или пропишите n - Для выхода: ")
     else:
         print("\nВы уже выбрали максимальное число покупок! Зайдите в корзину и удалите некоторые покупки!")
     while (user.GetCountValidate()):
@@ -40,6 +42,7 @@ def SiteUserViewTovars(tovars, user):
         except ValueError:
             print("Такого номера не существует! \n")
             tovars.PrintTovars()
+
 
 def SiteUserViewBaskets(tovars, user):
     while (user.GetCount() != 0):
@@ -64,6 +67,7 @@ def SiteUserViewBaskets(tovars, user):
     if user.GetCount() == 0:
         print("Корзина пуста!")
 
+
 def SiteUser(tovars, user):
     while True:
         print(
@@ -78,6 +82,7 @@ def SiteUser(tovars, user):
             case _:
                 break
 
+
 def SiteAdminViewUsers():
     print("\nВсе пользователи: ")
     i = 0
@@ -88,6 +93,7 @@ def SiteAdminViewUsers():
             print(f"\t{i + 1})Пользователь: {value.name} {value.surname}")
             i += 1
     return listUser
+
 
 def SiteAdminRemoveUsers():
     usersListKey = SiteAdminViewUsers()
@@ -105,6 +111,7 @@ def SiteAdminRemoveUsers():
         except Exception:
             print("Неверный формат!")
 
+
 def SiteAdminAddTovars(tovars, user):
     tovars.PrintTovars()
     print()
@@ -117,6 +124,7 @@ def SiteAdminAddTovars(tovars, user):
             print("Товар не добавлен!!! Недостаточно прав!")
     except ValueError:
         print("Данные введены неверно!")
+
 
 def SiteAdminDeleteTovars(tovars, user):
     tovars.PrintTovars()
@@ -134,6 +142,8 @@ def SiteAdminDeleteTovars(tovars, user):
                 print("Товар не удален!!! Недостаточно прав!")
         except ValueError:
             print("Данные введены неверно!")
+
+
 def SiteAdmin(tovars, user):
     while True:
         print(
@@ -153,6 +163,7 @@ def SiteAdmin(tovars, user):
             case _:
                 break
 
+
 def EnterSite(users):
     print("Введите данные для входа в аккаунт!")
     login = input("Введите логин: ")
@@ -165,6 +176,7 @@ def EnterSite(users):
         Site(user)
     else:
         print("\nПользователь не найден! Повторите попытку снова или зарегистрируйтесь!\n")
+
 
 def RegisterSite():
     print("Заполните ваши данные(те которые отмечены звездочками обязательные): \n")
@@ -182,6 +194,7 @@ def RegisterSite():
     users[str] = Person(False, name, surname)
     print("\nПользователь успешно зарегистрирован!\n")
 
+
 def main():
     while True:
         print(
@@ -195,6 +208,7 @@ def main():
                 RegisterSite()
             case _:
                 sys.exit(0)
+
 
 if __name__ == '__main__':
     main()

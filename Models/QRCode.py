@@ -1,5 +1,4 @@
 import enum
-import statistics
 
 
 class TypeQR(enum.Enum):
