@@ -1,3 +1,4 @@
+from Models.LanguageOperation import Language
 from Models.QRCode import *
 from Models.Settings import *
 from Models.Person import *
@@ -269,4 +270,6 @@ def main():
 
 
 if __name__ == '__main__':
+    lan = Language()
+    lan.GetLang()
     main()
