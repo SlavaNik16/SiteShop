@@ -1,12 +1,13 @@
 from Models.Settings import *
-class Person:
 
+
+class Person:
     name = ""
     surname = ""
     __basket = dict()
     __count = 0
 
-    def __init__(self, isAdmin, name="Неизвестно", surname="Неизвестно"):
+    def __init__(self, isAdmin: bool, name="Неизвестно", surname="Неизвестно"):
         self.__status = STATUS_ADMIN if isAdmin else STATUS_USER
         self.name = name
         self.surname = surname
@@ -14,14 +15,14 @@ class Person:
     def GetBasket(self):
         return self.__basket
 
-    def SetBasket(self, dictA):
+    def SetBasket(self, dictA: dict):
         self.__basket.update(dictA)
-        self.__count  = len(self.__basket)
+        self.__count = len(self.__basket)
         return "Товар успешно добавлен!"
 
-    def DeleteBasket(self, keys):
+    def DeleteBasket(self, keys: list):
         for key in keys:
-            if(key not in self.__basket.keys()):
+            if (key not in self.__basket.keys()):
                 return False
             self.__basket.pop(key)
             self.__count = len(self.__basket)

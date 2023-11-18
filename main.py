@@ -1,3 +1,4 @@
+from Models.QRCode import *
 from Models.Settings import *
 from Models.Person import *
 from Models.Tovar import *
@@ -84,7 +85,7 @@ def SiteAdminViewUsers():
     for key, value in users.items():
         if (value.GetStatus() == STATUS_USER):
             listUser.append(key)
-            print(f"\t{i + 1})Привет {value.name} {value.surname}")
+            print(f"\t{i + 1})Пользователь: {value.name} {value.surname}")
             i += 1
     return listUser
 

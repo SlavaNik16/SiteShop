@@ -1,7 +1,7 @@
 from Models.Settings import *
 
-class Tovar:
 
+class Tovar:
     __tovars = {
         "Видеокарта": 23432,
         "Материнская плата": 7423,
@@ -14,32 +14,32 @@ class Tovar:
     def GetTovars(self):
         return self.__tovars
 
-    def GetTovarNameById(self, index):
-        if(index >= 0 and index < len(self.__tovars)):
+    def GetTovarNameById(self, index: int):
+        if (index >= 0 and index < len(self.__tovars)):
             return list(self.__tovars.keys())[index]
-        return False#"Нет такого продукта"
+        return False  # "Нет такого продукта"
 
     def GetTovarByKey(self, key):
         if (key in self.__tovars.keys()):
             return dict({(key, self.__tovars[key])})
-        return False #"Неправильный ключ"
+        return False  # "Неправильный ключ"
 
     def PrintTovars(self):
         print("Список товаров:")
         i = 0
         for key, value in self.GetTovars().items():
             print(f"{i + 1}) {key} - {value}")
-            i+=1
+            i += 1
         if i == 0:
             print("Товаров нет в наличие!")
 
-    def AddTovars(self, isAdmin, key, value):
+    def AddTovars(self, isAdmin: bool, key, value):
         if (isAdmin == STATUS_ADMIN):
             self.GetTovars()[key] = value
             return True
         return False
 
-    def DeleteTovars(self, isAdmin, key):
+    def DeleteTovars(self, isAdmin: bool, key):
         if (isAdmin == STATUS_ADMIN):
             self.GetTovars().pop(key)
             return True
