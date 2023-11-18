@@ -20,6 +20,11 @@ class Person:
         self.__count = len(self.__basket)
         return "Товар успешно добавлен!"
 
+    def AddBasket(self, key, value):
+        self.__basket[key] = value
+        self.__count = len(self.__basket)
+        return "Товар успешно добавлен!"
+
     def DeleteBasket(self, keys: list):
         for key in keys:
             if key not in self.__basket.keys():

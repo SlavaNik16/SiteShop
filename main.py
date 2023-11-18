@@ -20,7 +20,7 @@ def Site(user):
         SiteAdmin(tovars, user)
 
 
-def SiteUserViewTovars(tovars:Tovar, user:Person):
+def SiteUserViewTovars(tovars: Tovar, user: Person):
     tovars.PrintTovars()
     if user.GetCountValidate():
         print(f"\nХотите что-нибудь купить? Выберите до 5 индивидуальных товаров включительно"
@@ -44,7 +44,7 @@ def SiteUserViewTovars(tovars:Tovar, user:Person):
             tovars.PrintTovars()
 
 
-def SiteUserViewBaskets(tovars:Tovar, user:Person):
+def SiteUserViewBaskets(tovars: Tovar, user: Person):
     while user.GetCount() != 0:
         print(f"Кол-во покупок: {user.GetCount()}/5")
         print(f"Полная цена: {sum(user.GetBasket().values())}")
@@ -68,27 +68,62 @@ def SiteUserViewBaskets(tovars:Tovar, user:Person):
         print("Корзина пуста!")
 
 
-def SiteUserViewBasketsDiscounts(tovars:Tovar, user:Person):
+def SiteUserViewBasketsDiscounts(tovars: Tovar, user: Person):
     discounts = dict()
     for i in range(0, 2):
-        rnd = random.randint(0, len(tovars) - 1)
+        rnd = random.randint(0, len(tovars.GetTovars()) - 1)
+        discounts[tovars.GetTovarNameById(rnd)] = QR.RandomQR()
+    print("Введите штрихкод товара, который скрыт и получите 20% скидку на товар!")
+    print(f"Товары со скидкой: {list(discounts.values())}")
+    print("\t1)Ввести штрих код\n\t2)Уйти")
+    choice = 1
+    try:
+        while choice == 1:
+            choice = int(input("Ваш выбор: "))
+            if choice == 2:
+                break
+            answer = input("Введите штрихкод: ")
+            for key, value in discounts.items():
+                if value.lower() == answer.lower():
+                    notDiscounts = str(tovars.GetTovars()[key])
+                    tovars.GetTovars()[key] *= 0.8
+                    discounts = round(tovars.GetTovars()[key], 2)
+                    print(
+                        f"Поздравляю вы получили скидку на товар: {key} со скидкой {discounts} {strike(notDiscounts)}")
+                    num = input("Хотите занести в корзину: Y (Да), N(Нет)")
+                    if num.lower() == "y":
+                        if user.GetCountValidate():
+                            user.AddBasket(key, discounts)
+                        else:
+                            print("У вас уже максимальное кол-во вещей в корзине!")
+                    return
+    except ValueError:
+        print("Неверный формат!")
 
 
-def SiteUser(tovars:Tovar, user:Person):
+# Метод зачеркивает текст
+def strike(text):
+    result = ''
+    for c in text:
+        result = result + c + '\u0336'
+    return result
+
+
+def SiteUser(tovars: Tovar, user: Person):
     while True:
         print("\nВам доступны такие действия:\n\t"
               "1) Просмотреть товары\n\t"
               "2) Просмотреть корзину\n\t"
-              "3)Выбрать лучшие предложения(надо ввести штрихкод)\n\t"
+              "3) Выбрать лучшие предложения(надо ввести штрихкод)\n\t"
               "Выйти из аккаунта - нажать любую кнопку")
-        answer = input("Ваш выбор:")
+        answer = input("Ваш выбор: ")
         print()
         match answer:
             case "1":
                 SiteUserViewTovars(tovars, user)
             case "2":
                 SiteUserViewBaskets(tovars, user)
-            case "2":
+            case "3":
                 SiteUserViewBasketsDiscounts(tovars, user)
             case _:
                 break
@@ -123,7 +158,7 @@ def SiteAdminRemoveUsers():
             print("Неверный формат!")
 
 
-def SiteAdminAddTovars(tovars:Tovar, user:Person):
+def SiteAdminAddTovars(tovars: Tovar, user: Person):
     tovars.PrintTovars()
     print()
     nameTovars = input("Введите название товара: ")
@@ -137,7 +172,7 @@ def SiteAdminAddTovars(tovars:Tovar, user:Person):
         print("Данные введены неверно!")
 
 
-def SiteAdminDeleteTovars(tovars:Tovar, user:Person):
+def SiteAdminDeleteTovars(tovars: Tovar, user: Person):
     tovars.PrintTovars()
     print()
     while True:
@@ -155,7 +190,7 @@ def SiteAdminDeleteTovars(tovars:Tovar, user:Person):
             print("Данные введены неверно!")
 
 
-def SiteAdmin(tovars:Tovar, user:Person):
+def SiteAdmin(tovars: Tovar, user: Person):
     while True:
         print(
             "Вам доступны такие действия:\n\t"
