@@ -178,7 +178,7 @@ def SiteAdminDeleteTovars(tovars: Tovar, user: Person):
     print()
     while True:
         answer = input("Введите номер товара, которого вы хотите удалить или n - для выхода: ")
-        if (answer == "n"):
+        if answer == "n":
             break
         try:
             num = int(answer)
@@ -250,6 +250,18 @@ def RegisterSite():
     users[str] = Person(False, name, surname)
     print("\nПользователь успешно зарегистрирован!\n")
 
+def Perevodchik():
+    lang = Language()
+    while True:
+        text = input("Введите текст для перевода: ")
+        result = lang.GetLanguage(text)
+        if result == text:
+            print("Текст уже переведен на русский!\n")
+        print(f"Результат: {result}\n")
+        answer = input("Хотите продолжить: Да, Нет?")
+        answer_result = lang.GetLanguage(answer)
+        if answer_result.lower() == "нет":
+            break
 
 def main():
     while True:
@@ -257,6 +269,7 @@ def main():
             "Добро пожаловать на сайт Собери ПК. Выберите одно из двух действий:\n\t"
             "1) Войти \n\t"
             "2) Зарегистрироваться\n\t"
+            "3) Воспользоваться переводчиком\n\t"
             "Выйти - введите любую букву\n")
         answer = input("Ваш выбор: ")
         print()
@@ -265,11 +278,11 @@ def main():
                 EnterSite(users)
             case "2":
                 RegisterSite()
+            case "3":
+                Perevodchik()
             case _:
                 sys.exit(0)
 
 
 if __name__ == '__main__':
-    lan = Language()
-    lan.GetLang()
     main()
